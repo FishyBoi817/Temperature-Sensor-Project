@@ -1,4 +1,4 @@
-Arduion using TinkerCAD Project - By Jonathan Ly | Last Updated Aug 15, 2024
+Arduion using TinkerCAD Project - By Jonathan | Last Updated Aug 15, 2024
 
 Description: A Termperature Sensor design reading from a TMP36 device. The LCD, LED & RGB will display certain color lights and messages when the TMP36 senses a range of temperatures.
              In order to display the LCD message, user must press the button on the pcb.
