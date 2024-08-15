@@ -1,0 +1,157 @@
+// C++ code by Jonathan Ly
+//
+#include <LiquidCrystal.h>
+
+//pin setup & variable declaration
+int button = 2;
+
+//led setup
+int	green = 11, yellow = 12, red = 13, blue = 10;
+
+//tmp setup
+int	sensorPin = A0, sensorInput;
+double temp; //The variable we will use to store temperature in degrees.
+
+//LCD setup
+const int rs = 7, en = 8, db4 = 6, db5 = 5, db6 = 4, db7 = 3;
+LiquidCrystal lcd(rs, en, db4, db5, db6, db7);
+
+void setup()
+{
+  //serial setup
+  Serial.begin(9600);
+  
+  //input devices
+  pinMode(button, INPUT);
+  
+  //led output devices
+  pinMode(blue, OUTPUT);
+  pinMode(green, OUTPUT);
+  pinMode(yellow, OUTPUT);
+  pinMode(red, OUTPUT);
+  
+  //LCD device
+  lcd.begin(16,2); //sets up LCD number of column (16) & row (2)
+
+}
+
+void loop()
+{  
+  lcd.setCursor(0,0);
+  lcd.print("Temp Sens Reader");  
+  lcd.setCursor(0,1); //starts at cloumn 0, line 1 (row 2)
+  lcd.print("  Run-Time: ");
+  lcd.print(millis()/ 1000);
+  
+  while (digitalRead(button) == HIGH)
+  { 
+      //basic setup for temp calc to celcius
+      sensorInput = analogRead(sensorPin); //read the analog sensor and store it
+      temp = (double)sensorInput / 1024; //find percentage of input reading
+      temp = temp * 5; //multiply by 5V to get voltage
+      temp = temp - 0.5; //Subtract the offset
+      temp = temp * 100; //Convert to degrees
+
+      Serial.print(temp);
+      Serial.print("\n");
+	  
+    //blue: -40 - 0 degrees
+      if (temp <= 0){          
+        
+
+        
+        do {
+          lcd.setCursor(0,0);
+          lcd.print("   Very Cold!   ");  
+          Serial.print("blue is blinking! \n");
+          
+          digitalWrite(blue, HIGH); 
+          delay(500);
+          digitalWrite(blue, LOW);
+          delay(500);
+          
+          //rgb set blue
+          setColor(0, 0, 255); // Blue RGB Color
+          delay(500);
+          
+        }while (digitalRead(button) == HIGH);
+		
+      }
+
+    //green: 1 - 50 degrees
+      else if (temp >= 1 && temp <= 50){          
+        
+
+        
+        do{
+          lcd.setCursor(0,0);
+          lcd.print("   Good Temp!    ");
+          Serial.print("green is blinking! \n");  
+          
+          digitalWrite(green, HIGH);
+          delay(500);
+          digitalWrite(green, LOW);
+          delay(500);
+          
+          //rgb set green
+          setColor(0, 255, 0); // Green RGB Color
+          delay(500);
+
+        }while (digitalRead(button) == HIGH);
+      }
+
+    //yellow: 51 - 80 degrees
+      else if (temp >= 51 && temp <= 80){		  
+        
+
+        
+        do{
+          lcd.setCursor(0,0);
+          lcd.print("   Warming Up!  ");
+          Serial.print("yellow is blinking! \n"); 
+          
+          digitalWrite(yellow, HIGH);
+          delay(500);
+          digitalWrite(yellow, LOW);
+          delay(500);
+          
+          //rgb set yellow
+          setColor(255, 255, 0); // Blue Color
+          delay(500);
+
+        }while (digitalRead(button) == HIGH);
+      }
+
+
+    //red: 81 - 125 degrees
+      else if (temp >= 81){		  
+
+        
+        do{
+          lcd.setCursor(0,0);
+          lcd.print("    Very Hot!   ");
+          Serial.print("red is blinking! \n");
+          
+          digitalWrite(red, HIGH); 
+          delay(500);
+          digitalWrite(red, LOW);
+          delay(500);
+          
+          //rgb set red
+          setColor(255, 0, 0); // Red RGB Color
+          delay(500);
+          
+        }while (digitalRead(button) == HIGH);
+      }
+ 
+	}
+  	digitalRead(button) == LOW;
+    setColor(0,0,0);
+}
+
+//sets rgb color
+void setColor(int redValue, int greenValue, int blueValue) {
+  analogWrite(red, redValue);
+  analogWrite(green, greenValue);
+  analogWrite(blue, blueValue);
+}
