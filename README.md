@@ -9,3 +9,5 @@ Description: A Termperature Sensor design reading from a TMP36 device. The LCD, 
              2)  1 t0 50 degree Celecius | LCD displays: "Good Temp" | RGB & LED Colour: Green
              4)  51 t0 80 degree Celecius | LCD displays: "Warming Up" | RGB & LED Colour: Yellow
              5)  81 t0 125 degree Celecius | LCD displays: "Very Hot" | RGB & LED Colour: Red
+
+![image](https://github.com/user-attachments/assets/65e10cd6-fc73-4c3b-b8a6-da38a3902345)
